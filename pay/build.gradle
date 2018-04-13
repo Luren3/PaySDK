@@ -1,0 +1,33 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "0.1.0"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+
+    api 'com.android.support:appcompat-v7:27.+'
+    //Gson
+    api 'com.google.code.gson:gson:2.8.0'
+    //微信支付
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    //支付宝支付
+    api files('libs/alipaySdk-20180403.jar')
+}
