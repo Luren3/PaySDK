@@ -46,6 +46,7 @@ public class AliPay extends Pay {
         stepOne();
     }
 
+    @SuppressWarnings("unchecked")
     private void stepOne(){
         String json = PayUtils.getJson(context, "pay.json");
         Gson gson = new Gson();
@@ -59,14 +60,22 @@ public class AliPay extends Pay {
     }
 
     private void stepTwo(){
-        LinkedHashMap<String, String> params = buildOrderParamMap();
-        String orderParam = buildOrderParam(params);
-        String sign = getSign(params);
-        final String orderInfo = orderParam + "&" + sign;
+
+        String orderInfo = "";
+        if (payOrder.getAliPayInfo().length() == 0){
+            LinkedHashMap<String, String> params = buildOrderParamMap();
+            String orderParam = buildOrderParam(params);
+            String sign = getSign(params);
+            orderInfo = orderParam + "&" + sign;
+        }else {
+            orderInfo = payOrder.getAliPayInfo();
+        }
+
+        final String finalOrderInfo = orderInfo;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Map<String, String> result = payTask.payV2(orderInfo, true);
+                Map<String, String> result = payTask.payV2(finalOrderInfo, true);
 
                 Message msg = new Message();
                 msg.what = 1;
@@ -77,6 +86,7 @@ public class AliPay extends Pay {
     }
 
     @SuppressLint("HandlerLeak")
+    @SuppressWarnings("unchecked")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {

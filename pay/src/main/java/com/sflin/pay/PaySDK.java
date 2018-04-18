@@ -2,6 +2,7 @@ package com.sflin.pay;
 
 public class PaySDK{
 
+    @SuppressWarnings("unchecked")
     public static <T extends Pay> T createPayAPI(Class<T> paramClass) {
         if (AliPay.class.isAssignableFrom(paramClass)) {
             return (T) new AliPay();

@@ -17,8 +17,11 @@ public class PayOrder {
     //随机字符串
     private String nonce;
 
-    //微信支付所需
-    private String prepayId;
+    //微信支付所需(服务端统一下单返回，相当于APP端不用调用生成)
+    private String WXPrepayId;
+
+    //支付宝支付所需(服务端统一下单返回，相当于APP端不用调用生成)
+    private String AliPayInfo;
 
     public String getPrice() {
         return price == null ? "":price;
@@ -60,11 +63,32 @@ public class PayOrder {
         this.nonce = nonce;
     }
 
-    public String getPrepayId() {
-        return prepayId == null ? "":prepayId;
+    public String getWXPrepayId() {
+        return WXPrepayId == null ? "":WXPrepayId;
     }
 
-    public void setPrepayId(String prepayId) {
-        this.prepayId = prepayId;
+    public void setWXPrepayId(String WXPrepayId) {
+        this.WXPrepayId = WXPrepayId;
+    }
+
+    public String getAliPayInfo() {
+        return AliPayInfo == null ? "":AliPayInfo;
+    }
+
+    public void setAliPayInfo(String aliPayInfo) {
+        AliPayInfo = aliPayInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "PayOrder{" +
+                "price='" + price + '\'' +
+                ", body='" + body + '\'' +
+                ", orderInfo='" + orderInfo + '\'' +
+                ", orderId='" + orderId + '\'' +
+                ", nonce='" + nonce + '\'' +
+                ", WXPrepayId='" + WXPrepayId + '\'' +
+                ", AliPayInfo='" + AliPayInfo + '\'' +
+                '}';
     }
 }

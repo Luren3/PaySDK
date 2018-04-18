@@ -78,6 +78,7 @@ public class WXPay extends Pay {
     };
 
     //第一步--初始化
+    @SuppressWarnings("unchecked")
     private void stepOne() {
         payReq = new PayReq();
         mIWXAPI = WXAPIFactory.createWXAPI(context, null);
@@ -90,7 +91,7 @@ public class WXPay extends Pay {
 
         mIWXAPI.registerApp(payParamMap.get("app_id").toString());
 
-        if (payOrder.getPrepayId().length() == 0) {
+        if (payOrder.getWXPrepayId().length() == 0) {
             createWXOrder();
         } else {
             stepTwo();
@@ -101,7 +102,7 @@ public class WXPay extends Pay {
     private void stepTwo() {
         payReq.appId = payParamMap.get("app_id").toString();
         payReq.partnerId = payParamMap.get("mch_id").toString();
-        payReq.prepayId = payOrder.getPrepayId();
+        payReq.prepayId = payOrder.getWXPrepayId();
         payReq.packageValue = "Sign=WXPay";
         payReq.nonceStr = payOrder.getNonce().length() == 0 ? payOrder.getBody():payOrder.getNonce();
         payReq.timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
@@ -133,7 +134,7 @@ public class WXPay extends Pay {
                     Log.e("dsdsd",data.toString());
 
                     if (data.get("return_code").equals("SUCCESS")) {
-                        payOrder.setPrepayId(data.get("prepay_id"));
+                        payOrder.setWXPrepayId(data.get("prepay_id"));
                         mHandler.sendEmptyMessage(0);
                     }
                     if (data.get("return_code").equals("FAIL")) {
